@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: akgateway
+  cloud:
+    gateway:
+      httpclient:
+        pool:
+          max-connections: 1000
+      routes:
+        - id: employeeroute
+          uri: http://localhost:5554
+          predicates:
+            - Path=/api/employees
+          filters:
+            - SecurityHeaders
+  main:
+    allow-bean-definition-overriding: true
+  output:
+    ansi:
+      console-available: true
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: http://localhost:8180/auth/realms/qrc/protocol/openid-connect/token/introspect
+          client-id: qrc-service
+          client-secret: 52892d3c-d8c3-475a-bc1f-5d8502a4d456
+
+gwsecurity:
+  issuer-uri: http://localhost:8180/auth/realms/qrc
+  audience:
+    - account
